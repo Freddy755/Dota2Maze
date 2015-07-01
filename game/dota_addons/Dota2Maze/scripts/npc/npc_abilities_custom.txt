@@ -1,0 +1,313 @@
+
+// Dota Abilities Override File
+"DOTAAbilities"
+{
+  "Version"   "1"
+  
+  "blademaster_windwalk"
+{
+	"BaseClass"             		"ability_datadriven"
+	"AbilityTextureName"			"blademaster_windwalk"
+	"MaxLevel" 						"3"
+
+	"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+	"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"
+
+	"AbilityCastPoint"				"0"
+	"AbilityCooldown"				"5.0"
+
+	"AbilityManaCost"				"75"
+
+	"precache"
+	{
+	  	"soundfile"	"soundevents/game_sounds_heroes/game_sounds_bounty_hunter.vsndevts"
+	  	"particle"	"particles/units/heroes/hero_bounty_hunter/bounty_hunter_windwalk.vpcf" 
+	}
+	
+	"AbilitySpecial"
+	{
+		"01"
+		{
+			"var_type"			"FIELD_INTEGER"
+			"duration"			"20 35 50"
+		}
+		"02"
+		{
+			"var_type"			"FIELD_INTEGER"
+			"bonus_movespeed"	"10 40 70"
+		}
+	}
+
+	"OnSpellStart"
+	{
+		"FireEffect"
+		{
+			"Target"			"CASTER"
+			"EffectName"		"particles/units/heroes/hero_bounty_hunter/bounty_hunter_windwalk.vpcf"
+			"EffectAttachType"	"attach_origin"
+		}
+
+		"FireSound"
+		{
+			"Target"		"CASTER"
+			"EffectName"	"Hero_BountyHunter.WindWalk"
+		}
+
+		"ApplyModifier"
+		{
+			"ModifierName" 	"modifier_invisible"
+			"Target"		"CASTER"
+			"Duration"		"%duration"
+		}
+
+		"ApplyModifier"
+		{
+			"ModifierName" 	"modifier_windwalk"
+			"Target"		"CASTER"
+			"Duration"		"%duration"
+		}
+	}
+
+	"Modifiers"
+	{
+		"modifier_windwalk"
+		{
+			"IsBuff"			"1"
+			"Duration"          "%duration"
+			//"EffectName"		"particles/units/heroes/hero_bounty_hunter/bounty_hunter_windwalk.vpcf"
+			//"EffectAttachType"	"follow_origin"
+
+			"Properties"
+			{
+				"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"      "%bonus_movespeed"
+			}
+			
+			"States"
+			{
+				"MODIFIER_STATE_INVISIBLE"			"MODIFIER_STATE_VALUE_ENABLED"
+				"MODIFIER_STATE_NO_UNIT_COLLISION"	"MODIFIER_STATE_VALUE_ENABLED"
+				"MODIFIER_STATE_NO_HEALTH_BAR" 		"MODIFIER_STATE_VALUE_ENABLED"
+			}
+			
+			"OnAttackLanded"
+			{
+				"RemoveModifier"
+				{
+					"ModifierName" 	"modifier_invisible"
+					"Target"		"CASTER"
+				}
+
+				"RemoveModifier"
+				{
+					"ModifierName" 	"modifier_windwalk"
+					"Target"		"CASTER"
+				}
+
+				"Damage"
+				{
+					"Target"	"TARGET"
+					"Type"		"DAMAGE_TYPE_PHYSICAL"
+					"Damage"	"%bonus_damage"
+				}
+
+				"FireEffect"
+				{
+					"EffectName"		"particles/msg_fx/msg_crit.vpcf"
+					"EffectAttachType"	"follow_overhead"
+					"Target"			"TARGET"
+					"ControlPoints"
+					{
+						"01"		"9 %bonus_damage 4"	//pre number post
+						"02"		"1 4 0"					//lifetime digits
+						"03"		"255 0 0"				//color
+					}
+				}
+			}
+
+			"OnAbilityExecuted"
+			{
+				"RemoveModifier"
+				{
+					"ModifierName" 	"modifier_invisible"
+					"Target"		"CASTER"
+				}
+
+				"RemoveModifier"
+				{
+					"ModifierName" 	"modifier_windwalk"
+					"Target"		"CASTER"
+				}
+			}
+		}
+	}
+}
+  
+  "tauren_chieftain_endurance_aura"
+{
+	"BaseClass"             		"ability_datadriven"
+	"AbilityTextureName"			"tauren_chieftain_endurance_aura"
+	"MaxLevel" 						"3"
+
+	"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_AURA | DOTA_ABILITY_BEHAVIOR_PASSIVE"
+	"AbilityUnitTargetTeam" 		"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+
+	"AbilityCastRange"    			"900"
+
+	"precache"
+	{
+		"particle"	"particles/custom/aura_endurance.vpcf"
+	}
+
+	"AbilitySpecial"
+	{
+		"01"
+		{
+			"var_type"				"FIELD_FLOAT"
+			"move_speed_bonus"		"10 20 30"
+		}
+		"02"
+		{
+			"var_type"				"FIELD_FLOAT"
+			"attack_speed_bonus"	"5 10 15"
+		}
+		"03"
+		{
+			"var_type"				"FIELD_INTEGER"
+			"radius"				"900"
+		}
+	}
+	"Modifiers"
+	{
+		"modifier_endurance_aura"
+		{
+			"EffectName"		"particles/custom/aura_endurance.vpcf"
+			"EffectAttachType" 	"follow_origin"
+
+			"Passive" 			"1"
+			"IsHidden" 			"1"
+			"IsBuff"			"1"
+
+			"Aura" 				"modifier_endurance_aura_effect"
+			"Aura_Radius" 		"%radius"
+			"Aura_Teams" 		"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+			"Aura_Types" 		"DOTA_UNIT_TARGET_ALL"
+		}
+		"modifier_endurance_aura_effect"
+		{
+			"IsBuff"				"1"
+			"Properties"
+			{
+				"MODIFIER_PROPERTY_ATTACKSPEED_BONUS_CONSTANT"	"%attack_speed_bonus"
+				"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"  "%move_speed_bonus"
+			}
+			"States"{
+				"MODIFIER_STATE_NO_HEALTH_BAR" 		"MODIFIER_STATE_VALUE_ENABLED"
+			}
+		}
+	}
+}
+"death_knight_unholy_aura"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"death_knight_unholy_aura"
+		"MaxLevel" 						"3"
+	
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_PASSIVE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+	
+		"AbilityCastRange"				"900"
+	
+		"precache"
+		{
+			"particle"	"particles/custom/doom_bringer_doom.vpcf"
+		}
+	
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"move_speed_bonus"		"10 20 30"
+			}
+			"02"
+			{
+				"var_type"				"FIELD_FLOAT"
+				"health_regen_bonus"	"0.5 1 1.5"
+			}
+			"03"
+			{
+				"var_type"				"FIELD_INTEGER"
+				"radius"				"900"
+			}
+		}
+	
+		"Modifiers"
+		{
+			"modifier_unholy_aura"
+			{
+				"EffectName"		"particles/custom/doom_bringer_doom.vpcf"
+				"EffectAttachType"  "follow_origin"
+				
+				"Passive" 			"1"
+				"IsHidden" 			"1"
+				"IsBuff"			"1"
+				"Aura" 				"modifier_unholy_aura_buff"
+				"Aura_Radius" 		"%radius"
+				"Aura_Teams" 		"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+				"Aura_Types" 		"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+			}
+	
+			"modifier_unholy_aura_buff"
+			{
+				"Properties"
+				{
+					"MODIFIER_PROPERTY_HEALTH_REGEN_CONSTANT"		"%health_regen_bonus"
+					"MODIFIER_PROPERTY_MOVESPEED_BONUS_PERCENTAGE"  "%move_speed_bonus"
+				}
+				"States"{
+					"MODIFIER_STATE_NO_HEALTH_BAR" 		"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+	}
+"no_health_bars"
+	{
+		"BaseClass"             		"ability_datadriven"
+		"AbilityTextureName"			"no_health_bars"
+		"MaxLevel" 						"0"
+	
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NOT_LEARNABLE"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		
+		"OnAttack"
+		{
+			"LevelUpAbility"
+			{	
+				"Target" 		"CASTER"
+				"AbilityName"	"no_health_bars"
+			}
+		}
+		
+		"Modifiers"
+		{
+			"modifier_health_bars"
+			{
+				"Passive" 			"1"
+				"IsHidden" 			"1"
+				"IsBuff"			"1"
+				"Aura" 				"modifier_health_bars_buff"
+				"Aura_Teams" 		"DOTA_UNIT_TARGET_TEAM_FRIENDLY"
+				"Aura_Types" 		"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+			}
+	
+			"modifier_health_bars_buff"
+			{
+				"States"{
+					"MODIFIER_STATE_NO_HEALTH_BAR" 		"MODIFIER_STATE_VALUE_ENABLED"
+				}
+			}
+		}
+	}
+}
+

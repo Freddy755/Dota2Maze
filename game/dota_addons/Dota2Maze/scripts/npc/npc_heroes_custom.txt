@@ -1,0 +1,49 @@
+"DOTAHeroes"
+{
+  "nightelf_demon_hunter"
+	{
+		// General
+		//----------------------------------------------------------------
+		"override_hero"				"npc_dota_hero_antimage"
+		
+		// Abilities
+		//----------------------------------------------------------------
+		"Ability1" 					"blademaster_windwalk"
+		"Ability2" 					"tauren_chieftain_endurance_aura"
+		"Ability3" 					"death_knight_unholy_aura"
+		"Ability4" 					"no_health_bars"
+		"Ability5"					""
+		"Ability6"					""
+		
+		// Armor
+		//----------------------------------------------------------------
+		"ArmorPhysical"				"5"
+		"MagicalResistance"			"0"
+		
+		
+		// Attributes
+		//----------------------------------------------------------------
+		"AttributePrimary"			"DOTA_ATTRIBUTE_AGILITY"
+		"AttributeBaseStrength"		"21"
+		"AttributeStrengthGain"		"2.4"
+		"AttributeBaseIntelligence"	"16"
+		"AttributeIntelligenceGain"	"2.1"
+		"AttributeBaseAgility"		"22"
+		"AttributeAgilityGain"		"1.5"
+		"AttackCapabilities" 		"DOTA_UNIT_CAP_NO_ATTACK"
+		
+		// Movement
+		//----------------------------------------------------------------
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_GROUND"
+		"MovementSpeed"				"350"
+		"MovementTurnRate"			"0.5"
+		
+		// Status
+		//----------------------------------------------------------------
+		"StatusHealth"				"100"
+		"StatusHealthRegen"			"0.5"
+		"StatusMana"				"0"
+		"StatusManaRegen"			"0"
+		
+	}
+}
